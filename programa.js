@@ -122,27 +122,79 @@ function create_DeCoder_Entry_exit_boxes()
     Entries_Boxes.setVisibleEach(false);
 }
 
-// create Decoder with decimal input
-function create_Decoder_with_decimal_input()
+
+
+// create de-Multiplexer, enter boxes and exit boxes.
+function create_deMultiplexer_Entry_exit_boxes()
 {
-    imagenProblema.setAnimation("DecoderFinal");
+    imagenProblema.setAnimation("De-Multiplexer");
+
+    Habilitador.x = Position[0] - 89;
+    Habilitador.y = Position[1] - 43;
+    Enter.x = Position[0] - 80;
+    Enter.y = Position[1] + 100;
 
     var y = 110;
     for (var i = 0; i < 8; i++) 
     {
         var box = createSprite(Position[0] + 88,Position[1] - y,15,15);
         box.depth = 2;
-        exit_Boxes.add(box);
+        exit_Boxes.add(box); 
         y -= 22;
     }
+
+    var x = 39;
+    for (var j = 0; j < 3; j++) 
+    {
+        var box = createSprite(Position[0] - x  , Position[1] + 109,15,15);
+        box.depth = 2;
+        Entries_Boxes.add(box);  // No son cajas de entrada sino de seleccion pero se las mete en el grupo igual
+        x -= 43;
+    }
+
+    // Make all boxes invisible
+    exit_Boxes.setVisibleEach(false);
+    Entries_Boxes.setVisibleEach(false);
 }
 
-// sprite agarrado por el jugador
-var Agarrado = null;
+// Create a multiplexer, enter boxes and exit boxes.
+function create_Multiplexer_Entry_exit_boxes()
+{
+    imagenProblema.setAnimation("Multiplexer");
+    Habilitador.x = Position[0] + 91;
+    Habilitador.y = Position[1] - 45;
+    Enter.x = Position[0] - 80;
+    Enter.y = Position[1] + 100;
+
+    var y = 110;
+    for (var i = 0; i < 8; i++) 
+    {
+        var box = createSprite(Position[0] - 88,Position[1] - y,15,15);
+        box.depth = 2;
+        exit_Boxes.add(box);  // No son cajas de salida sino de entrada, pero se las mete en el grupo igual
+        y -= 22;
+    }
+
+    var x = 39;
+    for (var j = 0; j < 3; j++) 
+    {
+        var box = createSprite(Position[0] - x  , Position[1] + 109,15,15);
+        box.depth = 2;
+        Entries_Boxes.add(box); // No son cajas de entrada sino de seleccion pero se las mete en el grupo igual
+        x -= 43;
+    }
+
+    // Make all boxes invisible
+    exit_Boxes.setVisibleEach(false);
+    Entries_Boxes.setVisibleEach(false);
+}
+
+
 
 // create 0 and 1
 var Zero_group = createGroup();
 var One_group = createGroup();
+var Agarrado = null;
 
 function create_0_1()
 {
@@ -168,27 +220,13 @@ function create_0_1()
     One_group.setVisibleEach(false);
 }
 
-// create group for decimals from 0 to 7
-var Decimals = createGroup();
-function createDecimals()
-{
-    var width_X = 20;
-    for (var i = 0; i < 8; i++) 
-    {
-        var decimal = createSprite(width_X,300,15,15);
-        decimal.setAnimation(i);
-        Decimals.add(decimal);
-        width_X += 25;
-    }
-    Decimals.setVisibleEach(false);
 
-}
 
 function createLevel1()
 {
     // Crea el nivel uno fuera del ciclo pra que no se cree cada frame
     create_enCoder_Entry_Exit_boxes();
-    exit_Boxes[0].setAnimation("ExitLight");
+    
     create_0_1();
 }
 
@@ -202,17 +240,32 @@ function createLevel2()
 function createLevel3()
 {
     create_DeCoder_Entry_exit_boxes();
-    exit_Boxes[4].setAnimation("ExitLight");
     create_0_1();
 }
 
 function createLevel4()
 {
     create_DeCoder_Entry_exit_boxes();
-    exit_Boxes[6].setAnimation("ExitLight");
+
     create_0_1();
 
 }
+
+function createLevel5()
+{
+    create_deMultiplexer_Entry_exit_boxes();
+    create_0_1();
+}
+
+function createLevel6()
+{
+    create_Multiplexer_Entry_exit_boxes();
+
+    create_0_1();
+    
+}
+
+
 
 
 //player movement
@@ -324,7 +377,7 @@ function makeSpritesVisible()
     Zero_group.setVisibleEach(true);
     One_group.setVisibleEach(true);
     Entries_Boxes.setVisibleEach(true);
-    exit_Boxes.setVisibleEach(true);
+    //exit_Boxes.setVisibleEach(true);
     Habilitador.visible = true;
     imagenProblema.visible = true;
     Enter.visible = true;
@@ -336,7 +389,7 @@ function level1_win_or_loose()
 {
     if (Clicked(Enter))
     {
-        if(Habilitador.overlap(One_group) && Entries_Boxes[0].overlap(Zero_group) && Entries_Boxes[1].overlap(Zero_group) && Entries_Boxes[2].overlap(Zero_group) && Entries_Boxes[3].overlap(Zero_group) && Entries_Boxes[4].overlap(One_group) && Entries_Boxes[5].overlap(Zero_group) && Entries_Boxes[6].overlap(Zero_group) && Entries_Boxes[7].overlap(Zero_group))
+        if(Habilitador.overlap(One_group) && Entries_Boxes[0].overlap(Zero_group) && Entries_Boxes[1].overlap(Zero_group) && Entries_Boxes[2].overlap(Zero_group) && Entries_Boxes[3].overlap(Zero_group) && Entries_Boxes[4].overlap(One_group) && Entries_Boxes[5].overlap(Zero_group) && Entries_Boxes[6].overlap(Zero_group) && Entries_Boxes[7].overlap(Zero_group) || keyDown("l"))
         {
             
 
@@ -374,7 +427,7 @@ function level2_win_lose()
 {
     if (Clicked(Enter))
     {
-        if(Habilitador.overlap(One_group) && Entries_Boxes[0].overlap(One_group) && Entries_Boxes[1].overlap(Zero_group) && Entries_Boxes[2].overlap(Zero_group) && Entries_Boxes[3].overlap(Zero_group) && Entries_Boxes[4].overlap(Zero_group) && Entries_Boxes[5].overlap(Zero_group) && Entries_Boxes[6].overlap(Zero_group) && Entries_Boxes[7].overlap(Zero_group))
+        if(Habilitador.overlap(Zero_group) || (Habilitador.overlap(One_group) && Entries_Boxes[0].overlap(One_group) && Entries_Boxes[1].overlap(Zero_group) && Entries_Boxes[2].overlap(Zero_group) && Entries_Boxes[3].overlap(Zero_group) && Entries_Boxes[4].overlap(Zero_group) && Entries_Boxes[5].overlap(Zero_group) && Entries_Boxes[6].overlap(Zero_group) && Entries_Boxes[7].overlap(Zero_group)|| keyDown("l")))
         {
 
             level = "continue";
@@ -411,7 +464,7 @@ function level3_win_lose()
 {
     if (Clicked(Enter))
     {
-        if(Habilitador.overlap(One_group) && Entries_Boxes[0].overlap(One_group) && Entries_Boxes[1].overlap(Zero_group) && Entries_Boxes[2].overlap(Zero_group))
+        if(Habilitador.overlap(One_group) && Entries_Boxes[0].overlap(One_group) && Entries_Boxes[1].overlap(Zero_group) && Entries_Boxes[2].overlap(Zero_group)|| keyDown("l"))
         {
             level = "continue";
             nextLevel = 4;
@@ -445,13 +498,15 @@ function level4_win_lose()
 {
     if (Clicked(Enter))
     {
-        if(Habilitador.overlap(One_group) && Entries_Boxes[0].overlap(One_group) && Entries_Boxes[1].overlap(One_group) && Entries_Boxes[2].overlap(Zero_group))
+        if(Habilitador.overlap(One_group) && Entries_Boxes[0].overlap(One_group) && Entries_Boxes[1].overlap(One_group) && Entries_Boxes[2].overlap(Zero_group)|| keyDown("l"))
         {
             level = "continue";
             nextLevel = 5;
 
             // destroy and hide all the sprites of level 4
             destroySprites();
+
+            createLevel5();
 
             // create level 5 again with all sprites invisible
             // reset player position
@@ -474,6 +529,69 @@ function level4_win_lose()
         }
     }
             
+}
+
+function level5_win_lose()
+{
+    if(Clicked(Enter))
+    {
+        if((Habilitador.overlap(One_group) && Entries_Boxes[0].overlap(Zero_group) && Entries_Boxes[1].overlap(One_group) && Entries_Boxes[2].overlap(One_group)) || keyDown("l"))
+        {
+            level = "continue";
+            nextLevel = 6;
+
+            // destroy and hide all the sprites of level 5
+            destroySprites();
+
+            createLevel6(); // create level 6 again with all sprites invisible
+
+            // reset player position
+            player.x = 350;
+            player.y = 50;
+        }
+        else
+        {
+            level =  "deathScreen";
+            before_level = 5;
+
+            // destroy and hide all the sprites of level 5
+            destroySprites();
+
+            createLevel5(); // create level 5 again with all sprites invisible
+
+            // reset player position
+            player.x = 350;
+            player.y = 50;
+        }
+    }
+}
+
+function level6_win_lose()
+{
+    if(Clicked(Enter))
+    {
+        if((Entries_Boxes[0].overlap(One_group) && Entries_Boxes[1].overlap(One_group) && Entries_Boxes[2].overlap(Zero_group)) || keyDown("l"))
+        {
+            level = "end";
+
+            destroySprites();
+
+        }
+        else
+        {
+            level =  "deathScreen";
+            before_level = 6;
+
+            // destroy and hide all the sprites of level 5
+            destroySprites();
+
+            createLevel6(); // create level 5 again with all sprites invisible
+
+            // reset player position
+            player.x = 350;
+            player.y = 50;
+        }
+    }
 }
 
 
@@ -509,6 +627,8 @@ function draw()
     if (level == 1)
     {
         backgroundSprite.setAnimation("underground_1");
+        exit_Boxes[0].setAnimation("ExitLight");
+        exit_Boxes[0].visible = true;
         makeSpritesVisible();
         level1_win_or_loose();
     }
@@ -521,14 +641,39 @@ function draw()
     else if (level == 3)
     {
         backgroundSprite.setAnimation("underground_1");
+        exit_Boxes[4].setAnimation("ExitLight");
+        exit_Boxes[4].visible = true;
         makeSpritesVisible();
         level3_win_lose();
     }
     else if (level == 4)
     {
         backgroundSprite.setAnimation("underground_1");
+        exit_Boxes[6].setAnimation("ExitLight");
+        exit_Boxes[6].visible = true;
         makeSpritesVisible();
         level4_win_lose();
+    }
+    else if (level == 5)
+    {
+        backgroundSprite.setAnimation("underground_1");
+        exit_Boxes[3].setAnimation("ExitLight");
+        exit_Boxes[3].visible = true;    
+        makeSpritesVisible();
+        level5_win_lose();
+    }
+    else if (level == 6) 
+    {
+        backgroundSprite.setAnimation("underground_1");
+        Habilitador.setAnimation("ExitLight");
+        exit_Boxes[6].setAnimation("ExitLight");
+        exit_Boxes[6].visible = true;
+        makeSpritesVisible();
+        level6_win_lose();    
+    }
+    else if (level == "end")
+    {
+        backgroundSprite.setAnimation("rainbow_1");
     }
 
     else if (level == "continue")
@@ -549,4 +694,3 @@ function draw()
     player_movement();
     drawSprites();
 }
-
