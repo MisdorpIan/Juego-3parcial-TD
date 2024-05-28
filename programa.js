@@ -22,6 +22,7 @@ player.setAnimation("alienPink_1");
 player.depth = 3;
 var playerOrientation = true;
 var playerSpeed = 3;
+var player_lives = 3;
 
 
 // Create Door
@@ -61,6 +62,17 @@ imagenProblema.depth = 1;
 imagenProblema.scale = 0.3;
 imagenProblema.visible = false;
 
+
+// create hearts
+var hearts = createGroup();
+var x = 0;
+for(var i = 0; i < 3; i++)
+{
+    var heart = createSprite(250 + x, 20, 20,20);
+    heart.setAnimation("vdayemoji_13_1");
+    hearts.add(heart);
+    x += 25;
+}
 
 // create Encoder, enter boxes and exit boxes.
 function create_enCoder_Entry_Exit_boxes()
@@ -365,6 +377,7 @@ function destroySprites()
     One_group.destroyEach();
     Entries_Boxes.destroyEach();
     exit_Boxes.destroyEach();
+    hearts.setVisibleEach(false);
     Habilitador.visible = false;
     imagenProblema.visible = false;
     Enter.visible = false;
@@ -377,6 +390,7 @@ function makeSpritesVisible()
     Zero_group.setVisibleEach(true);
     One_group.setVisibleEach(true);
     Entries_Boxes.setVisibleEach(true);
+    hearts.setVisibleEach(true);
     //exit_Boxes.setVisibleEach(true);
     Habilitador.visible = true;
     imagenProblema.visible = true;
@@ -411,7 +425,9 @@ function level1_win_or_loose()
             level =  "deathScreen";
             before_level = 1;
 
-            // destroy and hide all the sprites of level 1
+            hearts[player_lives - 1].destroy();
+            player_lives -= 1;
+            // destroy and hide all the sprites    console.log(player_lives); of level 1
             destroySprites();
 
             createLevel1(); // create level 1 again with all sprites invisible
@@ -447,6 +463,10 @@ function level2_win_lose()
             level =  "deathScreen";
             before_level = 2;
 
+            hearts[player_lives - 1].destroy();
+            player_lives -= 1;
+            console.log(player_lives);
+
             // destroy and hide all the sprites of level 2
             destroySprites();
 
@@ -481,6 +501,10 @@ function level3_win_lose()
         {
             level =  "deathScreen";
             before_level = 3;
+
+            hearts[player_lives - 1].destroy();
+            player_lives -= 1;
+            console.log(player_lives);
 
             // destroy and hide all the sprites of level 3
             destroySprites();
@@ -518,6 +542,10 @@ function level4_win_lose()
             level =  "deathScreen";
             before_level = 4;
 
+            hearts[player_lives - 1].destroy();
+            player_lives -= 1;
+            console.log(player_lives);
+
             // destroy and hide all the sprites of level 4
             destroySprites();
 
@@ -554,6 +582,10 @@ function level5_win_lose()
             level =  "deathScreen";
             before_level = 5;
 
+            hearts[player_lives - 1].destroy();
+            player_lives -= 1;
+            console.log(player_lives);
+
             // destroy and hide all the sprites of level 5
             destroySprites();
 
@@ -581,6 +613,10 @@ function level6_win_lose()
         {
             level =  "deathScreen";
             before_level = 6;
+
+            hearts[player_lives - 1].destroy();
+            player_lives -= 1;
+            console.log(player_lives);
 
             // destroy and hide all the sprites of level 5
             destroySprites();
@@ -623,6 +659,11 @@ createLevel1();
 function draw()
 {
     background("white");
+    if(player_lives  == 0)
+    {
+        backgroundSprite.setAnimation("bg_landscape21_1");
+        level = null;
+    }
     
     if (level == 1)
     {
@@ -694,3 +735,4 @@ function draw()
     player_movement();
     drawSprites();
 }
+
